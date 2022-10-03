@@ -5,6 +5,7 @@
 #include <memory>
 #include <thread>
 #include <functional>
+#include <unistd.h>
 
 #include "rclcpp/rclcpp.hpp"
 #include "custom_interfaces/msg/decision.hpp"

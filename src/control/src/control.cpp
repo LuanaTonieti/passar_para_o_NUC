@@ -34,6 +34,7 @@ using std::placeholders::_1;
 int movement = 1;
 int contador = 0;
 int cont_vision = 2047;
+cont_vision_up = 2047;
 int cont_fall_side = 0;
 bool stop_gait = true;
 bool fallen = false;
@@ -45,6 +46,7 @@ double A_amplitude = 4;
 bool same_moviment = false;
 bool ball = false;
 uint32_t valor = 255;
+uint32_t valor_up = 255;
 
 using namespace Robot;
 
@@ -1167,7 +1169,22 @@ public:
               publisher_walk->publish(message_walk);
               std::this_thread::sleep_for(std::chrono::seconds(1));
            break;
-          
+          case 20: // Search ball up_down
+            message_walk.walk_number = 0; 
+            publisher_walk->publish(message_walk);        
+            RCLCPP_INFO(this->get_logger(), "Moving head"); 
+            if(cont_vision_up>=3072) 
+              valor_up = -256;
+            else if(cont_vision_up<=1024)
+              valor_up=256;  
+            cont_vision_up = cont_vision_up + valor_up; 
+            message.id = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
+            //                    1   2     3    4    5    6    7    8    9   10   11   12   13   14   15   16   17   18      19      20
+            message.position = {1724,2367,2217,1878,627,3468,2052,2044,2032,2106,1712,2384,2791,1306,2536,1560,2048,2048,2048,cont_vision_up};
+            publisher_->publish(message);
+            std::this_thread::sleep_for(std::chrono::seconds(1));   
+            
+            break;
         }
       }
     }
